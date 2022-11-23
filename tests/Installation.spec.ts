@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import InstallationPage from '../pages/InstallationPage';
+import FactoryPage from '../pages/Factory';
 
 test('Installation page has title and links', async ({ page }) => {
-    var installationPage = new InstallationPage(page);
+    var installationPage = FactoryPage.CreateInstallationPage(page);
     await installationPage.Goto();
 
     

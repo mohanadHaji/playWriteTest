@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import MainPage from '../pages/mainPage';
+import FactoryPage from '../pages/Factory';
 
 test('homepage has title and links to intro page', async ({ page }) => {
-  var mainPage : MainPage = new MainPage(page);
+  var mainPage = FactoryPage.CreateMainPage(page);
   await mainPage.Goto();
 
   // Expect a title "to contain" a substring.
@@ -22,7 +22,7 @@ test('homepage has title and links to intro page', async ({ page }) => {
 });
 
 test('search box tests',async ( { page }) => {
-  var mainPage : MainPage = new MainPage(page);
+  var mainPage = FactoryPage.CreateMainPage(page);
   await mainPage.Goto();
   // Click the search bar
   await mainPage.ClickSearchBox();

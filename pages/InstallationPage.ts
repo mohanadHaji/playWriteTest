@@ -1,21 +1,29 @@
 import { Page, Locator } from '@playwright/test';
+import InstallationPageSelectors from '../Selector/InstallationPageSelectors';
+import MainPageSelector from '../Selector/MainPageSelectors';
 
 export default class {
 
     private readonly page : Page;
+    private readonly installationPageSelectors : InstallationPageSelectors;
 
     constructor(page: Page) {
-        this.page = page;    
+        this.page = page;
+        this.installationPageSelectors = new InstallationPageSelectors(page);  
     }
 
-    async Goto() : Promise<void> {
+    async GotoInstallationPage() : Promise<void> {
         await this.page.goto('https://playwright.dev/docs/intro');
     }
 
-    async Header() : Promise<Locator> {
-        return await this.page.locator(".theme-doc-markdown h1");
+    async HeaderText() : Promise<string | null> {
+        return await (await this.installationPageSelectors.Header())?.textContent();
     }
 
+    async GoTOWritingTestPage()
+    {
+        await (await this.installationPageSelectors.WritingTestLink()).click();
+    }
     // LinksList() : Locator[] {
     //     var locators : Locator[] = [this.page.locator('text=How to install Playwright'),
     //     this.page.locator('text=What\'s Installed'),

@@ -1,10 +1,16 @@
-export default class CommonData
+class CommonData
 {
-    static IntroLink : string = '/docs/intro'
+    IntroLink : string = '/docs/intro'
 
-    static SearchBoxString : string = 'Search docs';
+    SearchBoxString : string = 'Search docs';
 
-    static WritingTestsPageLink : string = '/docs/writing-tests'
+    WritingTestsPageLink : string = '/docs/writing-tests'
 
-    static SearchData = 'Installation'
+    SearchData : string = 'Installation'
+
+    PlayWriteUrl :string = 'https://playwright.dev'
 }
+
+let commonData : CommonData = new CommonData();
+
+export {commonData}

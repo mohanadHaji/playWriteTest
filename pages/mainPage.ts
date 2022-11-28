@@ -1,38 +1,41 @@
-import { expect, Locator, Page } from "@playwright/test";
-import FactoryPage from "../Factory";
+import { Page } from "@playwright/test";
+import { commonData } from "../Data/CommonData";
+import {factoryPage} from "../Factory";
 import CommonSelectors from "../Selector/CommonSelectors";
 import MainPageSelector from "../Selector/MainPageSelectors";
 export default class MainPage{
-    private readonly page : Page
     private readonly mainPageSelector : MainPageSelector
+    private readonly utils;
+    private readonly commonSelectors : CommonSelectors;
 
     constructor(page: Page) {
-        this.page = page;
-        this.mainPageSelector = FactoryPage.InitMainPageSelector(page);
+        this.mainPageSelector = factoryPage.InitMainPageSelector(page);
+        this.utils = factoryPage.InitUtils(page);
+        this.commonSelectors = factoryPage.InitCommonSelectors(page);
     }
 
     async GotoMainPage() : Promise<void> {
-        await this.page.goto('https://playwright.dev/');
+        await this.utils.Goto(commonData.PlayWriteUrl);
     }
 
     async ClickGetStartedLink()
     {
         var getStarted = await this.mainPageSelector.GetStartedLink();
-        await getStarted.click();
+        await this.utils.Click(getStarted);
     }
 
     async ClickSearchBox()
     {
-        var searchBox = await CommonSelectors.SearchBar(this.page);
-        await searchBox.click();
+        var searchBox = await this.commonSelectors.SearchBar();
+        await this.utils.Click(searchBox);
     }
 
     async SearchAndClickTopHit(searchData : string)
     {
         await this.ClickSearchBox();
-        var searchInput = await CommonSelectors.SearchBox(this.page);
-        await searchInput.fill(searchData)
-        await ( await this.page.locator('#docsearch-item-0 a')).click()
+        var searchInput = await this.commonSelectors.SearchBox();
+        await this.utils.Fill(searchInput, searchData)
+        await this.utils.Click(await this.commonSelectors.FirstItemInSearchLink());
     }
     
 }

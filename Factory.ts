@@ -1,27 +1,43 @@
 import { Page } from "@playwright/test";
 import InstallationPage from "./pages/InstallationPage";
 import MainPage from "./pages/MainPage";
+import CommonSelectors from "./Selector/CommonSelectors";
 import InstallationPageSelectors from "./Selector/InstallationPageSelectors";
 import MainPageSelector from "./Selector/MainPageSelectors";
+import Utils from "./Utils/Utils";
 
-export default abstract class FactoryPage{
-    static InitInstallationPage(page : Page) : [InstallationPage, InstallationPageSelectors]
+class FactoryPage{
+    InitInstallationPage(page : Page) : [InstallationPage, InstallationPageSelectors]
     {
         return [new InstallationPage(page), new InstallationPageSelectors(page)];
     }
 
-    static InitMainPageTests(page : Page) : [MainPage, MainPageSelector]
+    InitMainPageTests(page : Page) : [MainPage, MainPageSelector]
     {
         return [new MainPage(page), new MainPageSelector(page)];
     }
 
-    static InitMainPageSelector(page : Page) : MainPageSelector
+    InitMainPageSelector(page : Page) : MainPageSelector
     {
         return new MainPageSelector(page);
     }
 
-    static InitInstallationPageSelectors(page : Page) : InstallationPageSelectors
+    InitInstallationPageSelectors(page : Page) : InstallationPageSelectors
     {
         return new InstallationPageSelectors(page);
     }
+
+    InitUtils(page : Page) : Utils
+    {
+        return new Utils(page);
+    }
+
+    InitCommonSelectors(page : Page) : CommonSelectors
+    {
+        return new CommonSelectors(page);
+    }
 }
+
+let factoryPage = new FactoryPage();
+
+export {factoryPage};

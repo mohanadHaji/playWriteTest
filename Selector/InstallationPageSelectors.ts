@@ -1,22 +1,22 @@
 import { Locator, Page } from "@playwright/test"
-import InstallationPageData from "../Data/InstallationPageData";
+import Utils from "../Utils/Utils";
 
 export default class InstallationPageSelectors
 {
-    private readonly page : Page;
+    private readonly utils : Utils;
 
     constructor(page : Page)
     {
-        this.page = page;
+        this.utils = new Utils(page);
     }
 
     async Header() : Promise<Locator>
     {
-        return await this.page.locator(InstallationPageData.HeaderSelector);
+        return await this.utils.Locator(".theme-doc-markdown h1");
     }
 
-    async WritingTestLink() : Promise<Locator>
+    WritingTestLink() : Locator
     {
-        return this.page.getByRole('link', { name: 'Writing Tests' });
+        return this.utils.GetByRole('link', 'Writing Tests')
     }
 }

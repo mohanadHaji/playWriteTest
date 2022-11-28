@@ -1,30 +1,48 @@
-import { test, expect } from '@playwright/test';
-import FactoryPage from '../pages/Factory';
+import { test, expect, Page } from '@playwright/test';
+import CommonData from '../Data/CommonData';
+import InstallationPageData from '../Data/InstallationPageData';
+import FactoryPage from '../Factory';
+import InstallationPage from '../pages/InstallationPage';
+import InstallationPageSelectors from '../Selector/InstallationPageSelectors';
 
-test('Installation page has title and links', async ({ page }) => {
-    var installationPage = FactoryPage.CreateInstallationPage(page);
-    await installationPage.Goto();
+test.describe("Installation page tests", () => {
+    let installationPage : InstallationPage;
+    let installationPageSelectors : InstallationPageSelectors;
+    let page : Page;
 
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+        [installationPage, installationPageSelectors] = FactoryPage.InitInstallationPage(page);
+    });
+
+    test.afterAll(async () => {
+        await page.close();
+    });
+
+    test('Installation page has title', async () => {
+        await installationPage.GotoInstallationPage();
+        var headerString = await installationPage.HeaderText();
+        await expect(headerString, 'Page title is wrong').toBe("Installation");
     
-    var headerString = await (await installationPage.Header()).textContent();
-    await expect(headerString, 'Page title is wrong').toBe("Installation");
+        // const linkToPage = '/docs/intro#'
+        // var linksArray : string[] = 
+        // [linkToPage + 'installing-playwright',
+        // linkToPage + 'whats-installed',
+        // linkToPage + 'running-the-example-test',
+        // linkToPage + 'html-test-reports'];
+    
+        // var links = await installationPage.LinksList();
+        // var i = 0;
+        // links.forEach(async locator => {
+        //     await expect(locator).toHaveAttribute('href', linksArray[i])
+        //     i++;
+        // })
+    });
 
-    // const linkToPage = '/docs/intro#'
-    // var linksArray : string[] = 
-    // [linkToPage + 'installing-playwright',
-    // linkToPage + 'whats-installed',
-    // linkToPage + 'running-the-example-test',
-    // linkToPage + 'html-test-reports'];
-
-    // var links = await installationPage.LinksList();
-    // var i = 0;
-    // links.forEach(async locator => {
-    //     await expect(locator).toHaveAttribute('href', linksArray[i])
-    //     i++;
-    // })
-
-    const writingTests = page.getByRole('link', { name: 'Writing Tests' });
-    await expect(writingTests, 'nar bar links is not working').toHaveAttribute('href', '/docs/writing-tests');
-    await writingTests.click();
-    await expect(page, 'Page link url dircted to wrong path').toHaveURL(/.*writing-tests/);
+    test('Installation page has links', async ()=> {
+        await installationPage.GotoInstallationPage();
+        await expect(await installationPageSelectors.WritingTestLink(), 'nar bar links is not working').toHaveAttribute('href', CommonData.WritingTestsPageLink);
+        await installationPage.GoTOWritingTestPage();
+        await expect(page, 'Page link url dircted to wrong path').toHaveURL(InstallationPageData.WritingTestPageRegx);
+    })
 });

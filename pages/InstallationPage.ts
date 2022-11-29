@@ -1,28 +1,32 @@
-import { Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { commonData } from '../Data/CommonData';
+import { factoryPage } from '../Factory';
 import InstallationPageSelectors from '../Selector/InstallationPageSelectors';
-import MainPageSelector from '../Selector/MainPageSelectors';
+import Utils from '../Utils/Utils';
 
 export default class {
 
-    private readonly page : Page;
     private readonly installationPageSelectors : InstallationPageSelectors;
+    private readonly utils : Utils;
 
-    constructor(page: Page) {
-        this.page = page;
-        this.installationPageSelectors = new InstallationPageSelectors(page);  
+    constructor(page: Page) 
+    {
+        this.installationPageSelectors = new InstallationPageSelectors(page);
+        this.utils = factoryPage.InitUtils(page);
     }
 
     async GotoInstallationPage() : Promise<void> {
-        await this.page.goto('https://playwright.dev/docs/intro');
+        await this.utils.Goto(commonData.PlayWriteUrl + commonData.IntroLink);
     }
 
-    async HeaderText() : Promise<string | null> {
-        return await (await this.installationPageSelectors.Header())?.textContent();
+    async HeaderText() : Promise<string> 
+    {
+        return await this.utils.TextContent(await this.installationPageSelectors.Header());
     }
 
     async GoTOWritingTestPage()
     {
-        await (await this.installationPageSelectors.WritingTestLink()).click();
+        await this.utils.Click(await this.installationPageSelectors.WritingTestLink());
     }
     // LinksList() : Locator[] {
     //     var locators : Locator[] = [this.page.locator('text=How to install Playwright'),

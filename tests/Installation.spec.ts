@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
-import CommonData from '../Data/CommonData';
-import InstallationPageData from '../Data/InstallationPageData';
-import FactoryPage from '../Factory';
+import {commonData} from '../Data/CommonData';
+import {installationPageData} from '../Data/InstallationPageData';
+import {factoryPage} from '../Factory';
 import InstallationPage from '../pages/InstallationPage';
 import InstallationPageSelectors from '../Selector/InstallationPageSelectors';
 
@@ -12,7 +12,7 @@ test.describe("Installation page tests", () => {
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
-        [installationPage, installationPageSelectors] = FactoryPage.InitInstallationPage(page);
+        [installationPage, installationPageSelectors] = factoryPage.InitInstallationPage(page);
     });
 
     test.afterAll(async () => {
@@ -41,8 +41,8 @@ test.describe("Installation page tests", () => {
 
     test('Installation page has links', async ()=> {
         await installationPage.GotoInstallationPage();
-        await expect(await installationPageSelectors.WritingTestLink(), 'nar bar links is not working').toHaveAttribute('href', CommonData.WritingTestsPageLink);
+        await expect(await installationPageSelectors.WritingTestLink(), 'nar bar links is not working').toHaveAttribute('href', commonData.WritingTestsPageLink);
         await installationPage.GoTOWritingTestPage();
-        await expect(page, 'Page link url dircted to wrong path').toHaveURL(InstallationPageData.WritingTestPageRegx);
+        await expect(page, 'Page link url dircted to wrong path').toHaveURL(installationPageData.WritingTestPageRegx);
     })
 });

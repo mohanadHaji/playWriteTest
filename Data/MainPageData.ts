@@ -1,6 +1,10 @@
-export default class MainPageData
+class MainPageData
 {
-    static TitleRegx : RegExp =  /Playwright/
+    TitleRegx : RegExp =  /Playwright/
 
-    static IntorRegx : RegExp = /.*intro/;
+    IntorRegx : RegExp = /.*intro/;
 }
+
+let mainPageData : MainPageData = new MainPageData();
+
+export {mainPageData}

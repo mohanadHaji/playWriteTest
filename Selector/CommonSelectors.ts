@@ -1,25 +1,40 @@
 import { Page, Locator } from '@playwright/test';
+import { factoryPage } from '../Factory';
+import Utils from '../Utils/Utils';
 
 export default class CommonSelectors
 {
-    static async SearchBar(page : Page) : Promise<Locator>
+    private readonly utils : Utils;
+    /**
+     *
+     */
+    constructor(page : Page) 
     {
-        return await page.locator(".DocSearch");
+        this.utils = factoryPage.InitUtils(page);
+    }
+    async SearchBar() : Promise<Locator>
+    {
+        return await this.utils.Locator(".DocSearch");
     }
 
-    static async SearchBox(page: Page) : Promise<Locator>
+    async SearchBox() : Promise<Locator>
     {
-        return await page.locator('#docsearch-input');
+        return await this.utils.Locator('#docsearch-input');
     }
 
-    static async Footer(page : Page) : Promise<Locator>
+    async Footer() : Promise<Locator>
     {
-        return await page.locator(".footer");
+        return await this.utils.Locator(".footer");
     }
 
-    async CopyRightFooter(page : Page) : Promise<Locator>
+    async CopyRightFooter() : Promise<Locator>
     {
-        var footer = await CommonSelectors.Footer(page);
-        return await footer.locator('.footer__copyright')
+        var footer = await this.Footer();
+        return await this.utils.LocatorFromlocater(footer, '.footer__copyright')
+    }
+
+    async FirstItemInSearchLink() : Promise<Locator>
+    {
+        return await this.utils.Locator('#docsearch-item-0 a')
     }
 }
